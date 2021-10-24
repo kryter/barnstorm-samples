@@ -10,6 +10,10 @@ describe('example to-do app (with Barnstorm)', () => {
     todoPage.entryUrl().visit();
   });
 
+  it('have the todo text box initially in focus', () => {
+    todoPage.todosTextBox().verifyIsInFocus();
+  });
+
   it('displays two todo items by default', () => {
     const expectedContent = [
       'Pay electric bill',
