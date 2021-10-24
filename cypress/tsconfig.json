@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["esnext", "dom"],
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "noEmit": true,
+    "moduleResolution": "node"
   },
   "include": ["integration/*.ts"]
 }
