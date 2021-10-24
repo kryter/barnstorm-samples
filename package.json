@@ -1,0 +1,30 @@
+{
+  "name": "@kryter/barnstorm-samples",
+  "version": "1.0.0",
+  "description": "Samples of end to end tests using Barnstorm",
+  "scripts": {
+    "test": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kryter/barnstorm-samples.git"
+  },
+  "keywords": [
+    "automation",
+    "barnstorm",
+    "browser",
+    "cypress",
+    "cypress.io",
+    "e2e",
+    "end-to-end",
+    "integration",
+    "test",
+    "testing"
+  ],
+  "author": "Kori Ryter <kryter@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kryter/barnstorm-samples/issues"
+  },
+  "homepage": "https://github.com/kryter/barnstorm-samples#readme"
+}
