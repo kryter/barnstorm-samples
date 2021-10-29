@@ -12,7 +12,7 @@ class TodoPage {
     });
   }
 
-  public todosList(): ListInstrument {
+  public todoList(): ListInstrument {
     return new ListInstrument({
       selector: '.todo-list',
       relativeItemSelector: 'li'
@@ -21,7 +21,7 @@ class TodoPage {
 
   public todoListItem(itemNumber: number): ElementInstrument {
     return new ElementInstrument({
-      listInstrument: this.todosList(),
+      listInstrument: this.todoList(),
       itemNumber: itemNumber,
       selector: ''
     });
@@ -30,13 +30,13 @@ class TodoPage {
 
   public todoListItemCheckbox(itemNumber: number): CheckboxInstrument {
     return new CheckboxInstrument({
-      listInstrument: this.todosList(),
+      listInstrument: this.todoList(),
       itemNumber: itemNumber,
       selector: 'input[type="checkbox"].toggle'
     });
   }
 
-  public todosTextBox(): TextBoxInstrument {
+  public todoTextBox(): TextBoxInstrument {
     return new TextBoxInstrument({
       selector: '[data-test=new-todo]'
     });

@@ -2,7 +2,7 @@
 
 import { register } from '@kryter/barnstorm-cypress/lib/register';
 import { KeyboardInstrument } from '@kryter/barnstorm/lib/instruments/KeyboardInstrument';
-import { todoPage } from '../../src/todos/TodosPage';
+import { todoPage } from '../../src/todo/TodoPage';
 
 describe('example to-do app (with Barnstorm)', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('example to-do app (with Barnstorm)', () => {
   });
 
   it('have the todo text box initially in focus', () => {
-    todoPage.todosTextBox().verifyIsInFocus();
+    todoPage.todoTextBox().verifyIsInFocus();
   });
 
   it('displays two todo items by default', () => {
@@ -20,13 +20,13 @@ describe('example to-do app (with Barnstorm)', () => {
       'Walk the dog'
     ];
 
-    todoPage.todosList().verifyListContent(expectedContent);
+    todoPage.todoList().verifyListContent(expectedContent);
   });
 
   it('can add new todo items', () => {
     const newItem = 'Feed the cat';
 
-    todoPage.todosTextBox().enterText(newItem);
+    todoPage.todoTextBox().enterText(newItem);
     KeyboardInstrument.pressEnter();
 
     const expectedContent = [
@@ -35,7 +35,7 @@ describe('example to-do app (with Barnstorm)', () => {
       newItem
     ];
 
-    todoPage.todosList().verifyListContent(expectedContent);
+    todoPage.todoList().verifyListContent(expectedContent);
   });
 
   it('can check off an item as completed', () => {
@@ -69,7 +69,7 @@ describe('example to-do app (with Barnstorm)', () => {
       const expectedContent = [
         'Walk the dog'
       ];
-      todoPage.todosList().verifyListContent(expectedContent);
+      todoPage.todoList().verifyListContent(expectedContent);
     });
 
     it('can filter for completed tasks', () => {
@@ -81,7 +81,7 @@ describe('example to-do app (with Barnstorm)', () => {
       const expectedContent = [
         'Pay electric bill'
       ];
-      todoPage.todosList().verifyListContent(expectedContent);
+      todoPage.todoList().verifyListContent(expectedContent);
     });
 
     it('can delete all completed tasks', () => {
@@ -91,7 +91,7 @@ describe('example to-do app (with Barnstorm)', () => {
       const expectedContent = [
         'Walk the dog'
       ];
-      todoPage.todosList().verifyListContent(expectedContent);
+      todoPage.todoList().verifyListContent(expectedContent);
 
       // Finally, make sure that the clear button no longer exists.
       todoPage.clearCompletedButton().verifyIsNotVisible();

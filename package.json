@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc -p ./cypress/tsconfig.json",
     "cypress:open": "cypress open",
-    "e2e": "cypress run --spec 'cypress/integration/todosSpecWithBarnstorm.ts'"
+    "e2e": "cypress run --spec 'cypress/integration/todoSpecWithBarnstorm.ts'"
   },
   "repository": {
     "type": "git",

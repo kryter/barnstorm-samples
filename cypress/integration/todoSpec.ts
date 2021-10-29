@@ -26,7 +26,7 @@ describe('example to-do app', () => {
     // which are the two default items.
     cy.get('.todo-list li').should('have.length', 2)
 
-    // We can go even further and check that the default todos each contain
+    // We can go even further and check that the default todo items each contain
     // the correct text. We use the `first` and `last` functions
     // to get just the first and last matched elements individually,
     // and then perform an assertion with `should`.
