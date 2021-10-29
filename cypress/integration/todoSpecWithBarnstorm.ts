@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import { register } from '@kryter/barnstorm-cypress/lib/register';
-import { KeyboardInstrument } from '@kryter/barnstorm/lib/instruments/KeyboardInstrument';
+import { KeyboardInstrument } from '@kryter/barnstorm/lib/instruments';
 import { todoPage } from '../../src/todo/TodoPage';
 
 describe('example to-do app (with Barnstorm)', () => {

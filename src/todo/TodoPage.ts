@@ -1,9 +1,11 @@
-import { ButtonInstrument } from "@kryter/barnstorm/lib/instruments/ButtonInstrument";
-import { CheckboxInstrument } from "@kryter/barnstorm/lib/instruments/CheckboxInstrument";
-import { ElementInstrument } from "@kryter/barnstorm/lib/instruments/ElementInstrument";
-import { ListInstrument } from "@kryter/barnstorm/lib/instruments/ListInstrument";
-import { TextBoxInstrument } from "@kryter/barnstorm/lib/instruments/TextBoxInstrument";
-import { UrlInstrument } from "@kryter/barnstorm/lib/instruments/UrlInstrument";
+import {
+  ButtonInstrument,
+  CheckboxInstrument,
+  ElementInstrument,
+  ListInstrument,
+  TextBoxInstrument,
+  UrlInstrument
+ } from "@kryter/barnstorm/lib/instruments";
 
 class TodoPage {
   public entryUrl(): UrlInstrument {
@@ -26,7 +28,6 @@ class TodoPage {
       selector: ''
     });
   }
-
 
   public todoListItemCheckbox(itemNumber: number): CheckboxInstrument {
     return new CheckboxInstrument({
