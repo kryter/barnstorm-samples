@@ -1,12 +1,12 @@
 /// <reference types="cypress" />
 
-import { register } from '@kryter/barnstorm-cypress/lib/register';
+import { preflight } from '@kryter/barnstorm-cypress/lib/preflight';
 import { KeyboardInstrument } from '@kryter/barnstorm/lib/instruments';
 import { todoPage } from '../../src/todo/TodoPage';
 
 describe('example to-do app (with Barnstorm)', () => {
   beforeEach(() => {
-    register();
+    preflight();
     todoPage.entryUrl().visit();
   });
 
