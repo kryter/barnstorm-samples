@@ -1,20 +1,17 @@
 /// <reference types="cypress" />
 
-import { preflight } from '@kryter/barnstorm-cypress/lib/preflight';
-import { KeyboardInstrument } from '@kryter/barnstorm/lib/instruments';
 import { todoPage } from '../../src/todo/TodoPage';
 
 describe('example to-do app (with Barnstorm)', () => {
   beforeEach(() => {
-    preflight();
     todoPage.entryUrl().visit();
   });
 
-  it('have the todo text box initially in focus', () => {
+  it('Verify the todo text box is initially in focus', () => {
     todoPage.todoTextBox().verifyIsInFocus();
   });
 
-  it('displays two todo items by default', () => {
+  it('Verify todo items list content: two todo items by default', () => {
     const expectedContent = [
       'Pay electric bill',
       'Walk the dog'
@@ -23,11 +20,11 @@ describe('example to-do app (with Barnstorm)', () => {
     todoPage.todoList().verifyListContent(expectedContent);
   });
 
-  it('can add new todo items', () => {
+  it('Add a new todo item', () => {
     const newItem = 'Feed the cat';
 
     todoPage.todoTextBox().enterText(newItem);
-    KeyboardInstrument.pressEnter();
+    todoPage.keyboard().pressEnter();
 
     const expectedContent = [
       'Pay electric bill',
@@ -38,13 +35,13 @@ describe('example to-do app (with Barnstorm)', () => {
     todoPage.todoList().verifyListContent(expectedContent);
   });
 
-  it('can check off an item as completed', () => {
+  it('Check off an item as completed', () => {
     todoPage.todoListItemCheckbox(1).check();
 
     // Now that we've checked the button, we can go ahead and make sure
     // that the list element is now marked as completed.
     todoPage.todoListItem(1).verifyHasClass('completed');
-  })
+  });
 
   context('with a checked task', () => {
     beforeEach(() => {
@@ -54,9 +51,10 @@ describe('example to-do app (with Barnstorm)', () => {
       // so that it runs at the start of every test.
       todoPage.todoListItemCheckbox(1).check();
       todoPage.todoListItem(1).verifyHasClass('completed');
-    })
+    });
 
-    it('can filter for uncompleted tasks', () => {
+
+    it('Filter for uncompleted tasks', () => {
       // We'll click on the "active" button in order to
       // display only incomplete items
       todoPage.activeFilterButton().verifyTextContent('Active');
@@ -72,7 +70,7 @@ describe('example to-do app (with Barnstorm)', () => {
       todoPage.todoList().verifyListContent(expectedContent);
     });
 
-    it('can filter for completed tasks', () => {
+    it('Filter for completed tasks', () => {
       // We can perform similar steps as the test above to ensure
       // that only completed tasks are shown
       todoPage.completedFilterButton().verifyTextContent('Completed');
@@ -84,7 +82,7 @@ describe('example to-do app (with Barnstorm)', () => {
       todoPage.todoList().verifyListContent(expectedContent);
     });
 
-    it('can delete all completed tasks', () => {
+    it('Delete all completed tasks', () => {
       todoPage.clearCompletedButton().verifyTextContent('Clear completed');
       todoPage.clearCompletedButton().click()
 
@@ -96,5 +94,5 @@ describe('example to-do app (with Barnstorm)', () => {
       // Finally, make sure that the clear button no longer exists.
       todoPage.clearCompletedButton().verifyIsNotVisible();
     })
-  })
-})
+  });
+});
