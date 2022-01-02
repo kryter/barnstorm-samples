@@ -1,46 +1,38 @@
 /// <reference types="cypress" />
 
-import { todoPage } from '../../src/todo/TodoPage';
+import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
+import { fly } from '@kryter/barnstorm/lib/fly';
+import {ButtonInstrument, TextBoxInstrument, UrlInstrument, URL_INSTRUMENT_ID} from '@kryter/barnstorm/lib/instruments';
+import { buildInstrumentSet } from '../../src/AppInstrumentSet';
+import {todoListPage, TODO_ITEM_TEXT_BOX_ID, ACTIVE_FILTER_BUTTON_ID, TODO_LIST_ITEM_TEXT_ID, TODO_LIST_ITEM_CHECKBOX_ID, CLEAR_COMPLETED_BUTTON_ID} from '../../src/todo/TodoPage';
+import {addTodoItemFlightPlan, checkOffTaskFlightPlan, filterTasksFlightPlan, filterCompletedTasksFlightPlan, filterUncompletedTasksFlightPlan, deleteCompletedTasksFlightPlan} from '../../src/todo/TodoPilot';
+import {ENTRY_URL} from '../../src/todo/AppUrls';
+import { instrumentSet } from '@kryter/barnstorm/lib/instrumentSet';
 
 describe('example to-do app (with Barnstorm)', () => {
+  let instrumentSet: InstrumentSet;
+
   beforeEach(() => {
-    todoPage.entryUrl().visit();
+    instrumentSet = buildInstrumentSet();
+    todoListPage(instrumentSet);
+
+    instrumentSet.use<UrlInstrument>(URL_INSTRUMENT_ID).visit(ENTRY_URL);
   });
 
   it('Verify the todo text box is initially in focus', () => {
-    todoPage.todoTextBox().verifyIsInFocus();
-  });
-
-  it('Verify todo items list content: two todo items by default', () => {
-    const expectedContent = [
-      'Pay electric bill',
-      'Walk the dog'
-    ];
-
-    todoPage.todoList().verifyListContent(expectedContent);
+    instrumentSet.use<TextBoxInstrument>(TODO_ITEM_TEXT_BOX_ID).verifyIsInFocus();
   });
 
   it('Add a new todo item', () => {
-    const newItem = 'Feed the cat';
-
-    todoPage.todoTextBox().enterText(newItem);
-    todoPage.keyboard().pressEnter();
-
-    const expectedContent = [
-      'Pay electric bill',
-      'Walk the dog',
-      newItem
-    ];
-
-    todoPage.todoList().verifyListContent(expectedContent);
+    fly(instrumentSet, addTodoItemFlightPlan({
+      newItemText: 'Feed the cat'
+    }));
   });
 
   it('Check off an item as completed', () => {
-    todoPage.todoListItemCheckbox(1).check();
-
-    // Now that we've checked the button, we can go ahead and make sure
-    // that the list element is now marked as completed.
-    todoPage.todoListItem(1).verifyHasClass('completed');
+    fly(instrumentSet, checkOffTaskFlightPlan({
+      todoItemIndex: 0
+    }));
   });
 
   context('with a checked task', () => {
@@ -49,50 +41,53 @@ describe('example to-do app (with Barnstorm)', () => {
       // Since we want to perform multiple tests that start with checking
       // one element, we put it in the beforeEach hook
       // so that it runs at the start of every test.
-      todoPage.todoListItemCheckbox(1).check();
-      todoPage.todoListItem(1).verifyHasClass('completed');
+      fly(instrumentSet, checkOffTaskFlightPlan({
+        todoItemIndex: 0,
+      }));
     });
-
 
     it('Filter for uncompleted tasks', () => {
       // We'll click on the "active" button in order to
       // display only incomplete items
-      todoPage.activeFilterButton().verifyTextContent('Active');
-      todoPage.activeFilterButton().click();
-
       // After filtering, we can assert that there is only the one
       // incomplete item in the list.
       // By verifying the full content, we can also assert that the task we checked off
       // does not exist on the page.
-      const expectedContent = [
-        'Walk the dog'
-      ];
-      todoPage.todoList().verifyListContent(expectedContent);
+      fly(instrumentSet, filterUncompletedTasksFlightPlan({
+        expectedContent: [
+          {
+            [TODO_LIST_ITEM_TEXT_ID]: 'Walk the dog',
+            [TODO_LIST_ITEM_CHECKBOX_ID]: false
+          }
+        ]
+      }));
     });
 
     it('Filter for completed tasks', () => {
       // We can perform similar steps as the test above to ensure
       // that only completed tasks are shown
-      todoPage.completedFilterButton().verifyTextContent('Completed');
-      todoPage.completedFilterButton().click();
-
-      const expectedContent = [
-        'Pay electric bill'
-      ];
-      todoPage.todoList().verifyListContent(expectedContent);
+      fly(instrumentSet, filterCompletedTasksFlightPlan({
+        expectedContent: [
+          {
+            [TODO_LIST_ITEM_TEXT_ID]: 'Pay electric bill',
+            [TODO_LIST_ITEM_CHECKBOX_ID]: true
+          }
+        ]
+      }));
     });
 
     it('Delete all completed tasks', () => {
-      todoPage.clearCompletedButton().verifyTextContent('Clear completed');
-      todoPage.clearCompletedButton().click()
-
-      const expectedContent = [
-        'Walk the dog'
-      ];
-      todoPage.todoList().verifyListContent(expectedContent);
+      fly(instrumentSet, deleteCompletedTasksFlightPlan({
+        expectedContent: [
+          {
+            [TODO_LIST_ITEM_TEXT_ID]: 'Walk the dog',
+            [TODO_LIST_ITEM_CHECKBOX_ID]: false
+          }
+        ]
+      }));
 
       // Finally, make sure that the clear button no longer exists.
-      todoPage.clearCompletedButton().verifyIsNotVisible();
+      instrumentSet.use<ButtonInstrument>(CLEAR_COMPLETED_BUTTON_ID).verifyIsNotVisible();
     })
   });
 });

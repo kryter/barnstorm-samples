@@ -1,69 +1,65 @@
-import { ButtonInstrument } from '@kryter/barnstorm/lib/instruments/button/ButtonInstrument';
-import { CheckboxInstrument } from '@kryter/barnstorm/lib/instruments/checkbox/CheckboxInstrument';
-import { ElementInstrument } from '@kryter/barnstorm/lib/instruments/element/ElementInstrument';
-import { KeyboardInstrument } from '@kryter/barnstorm/lib/instruments/keyboard/KeyboardInstrument';
-import { ListInstrument } from '@kryter/barnstorm/lib/instruments/list/ListInstrument';
-import { TextBoxInstrument } from '@kryter/barnstorm/lib/instruments/textBox/TextBoxInstrument';
-import { UrlInstrument } from '@kryter/barnstorm/lib/instruments/url/UrlInstrument';
-import instrumentSet from '../AppInstrumentSet';
+import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
+import { INSTRUMENT_TYPES } from '@kryter/barnstorm/lib/InstrumentOptions';
 
-class TodoPage {
-  public keyboard(): KeyboardInstrument {
-    return instrumentSet.setupKeyboard();
-  }
+export const TODO_LIST_ID = 'TODO_LIST_ID';
+export const TODO_LIST_ITEM_TEXT_ID = 'TODO_LIST_ITEM_TEXT_ID';
+export const TODO_LIST_ITEM_CHECKBOX_ID = 'TODO_LIST_ITEM_CHECKBOX_ID';
+export const TODO_ITEM_TEXT_BOX_ID = 'TODO_ITEM_TEXT_BOX_ID';
+export const CLEAR_COMPLETED_BUTTON_ID = 'CLEAR_COMPLETED_BUTTON_ID';
+export const COMPLETED_FILTER_BUTTON_ID = 'COMPLETED_FILTER_BUTTON_ID';
+export const ACTIVE_FILTER_BUTTON_ID = 'ACTIVE_FILTER_BUTTON_ID';
 
-  public entryUrl(): UrlInstrument {
-    return instrumentSet.setupUrl({
-      url: 'https://example.cypress.io/todo'
-    });
-  }
+export function todoListPage(instrumentSet: InstrumentSet): void {
+  instrumentSet.setup({
+    id: TODO_LIST_ID,
+    instrumentType: INSTRUMENT_TYPES.LIST,
+    selector: '.todo-list',
+    relativeItemSelector: 'li',
+    columns: [
+      {
+        id: TODO_LIST_ITEM_TEXT_ID,
+        instrumentType: INSTRUMENT_TYPES.SIMPLE_ELEMENT,
+        selector: '',
+      },
+      {
+        id: TODO_LIST_ITEM_CHECKBOX_ID,
+        instrumentType: INSTRUMENT_TYPES.CHECKBOX,
+        selector: 'input[type="checkbox"].toggle'
+      }
+    ],
+    initialState: [
+      {
+        [TODO_LIST_ITEM_TEXT_ID]: 'Pay electric bill',
+        [TODO_LIST_ITEM_CHECKBOX_ID]: false
+      },
+      {
+        [TODO_LIST_ITEM_TEXT_ID]: 'Walk the dog',
+        [TODO_LIST_ITEM_CHECKBOX_ID]: false
+      }
+    ]
+  });
 
-  public todoList(): ListInstrument {
-    return instrumentSet.setupList({
-      selector: '.todo-list',
-      relativeItemSelector: 'li'
-    });
-  }
+  instrumentSet.setup({
+    id: TODO_ITEM_TEXT_BOX_ID,
+    instrumentType: INSTRUMENT_TYPES.TEXT_BOX,
+    selector: '[data-test=new-todo]'
+  });
 
-  public todoListItem(itemNumber: number): ElementInstrument {
-    return instrumentSet.setupElement({
-      listInstrument: this.todoList(),
-      itemNumber: itemNumber,
-      selector: ''
-    });
-  }
+  instrumentSet.setup({
+    id: COMPLETED_FILTER_BUTTON_ID,
+    instrumentType: INSTRUMENT_TYPES.BUTTON,
+    selector: '[href="#/completed"]'
+  });
 
-  public todoListItemCheckbox(itemNumber: number): CheckboxInstrument {
-    return instrumentSet.setupCheckbox({
-      listInstrument: this.todoList(),
-      itemNumber: itemNumber,
-      selector: 'input[type="checkbox"].toggle'
-    });
-  }
+  instrumentSet.setup({
+    id: ACTIVE_FILTER_BUTTON_ID,
+    instrumentType: INSTRUMENT_TYPES.BUTTON,
+    selector: '[href="#/active"]'
+  });
 
-  public todoTextBox(): TextBoxInstrument {
-    return instrumentSet.setupTextBox({
-      selector: '[data-test=new-todo]'
-    });
-  }
-
-  public completedFilterButton(): ButtonInstrument {
-    return instrumentSet.setupButton({
-      selector: '[href="#/completed"]'
-    });
-  }
-
-  public activeFilterButton(): ButtonInstrument {
-    return instrumentSet.setupButton({
-      selector: '[href="#/active"]'
-    });
-  }
-
-  public clearCompletedButton(): ButtonInstrument {
-    return instrumentSet.setupButton({
-      selector: '.todo-button.clear-completed'
-    });
-  }
+  instrumentSet.setup({
+    id: CLEAR_COMPLETED_BUTTON_ID,
+    instrumentType: INSTRUMENT_TYPES.BUTTON,
+    selector: '.todo-button.clear-completed'
+  });
 }
-
-export const todoPage = new TodoPage();
