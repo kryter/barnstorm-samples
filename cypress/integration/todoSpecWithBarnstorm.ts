@@ -4,10 +4,9 @@ import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
 import { fly } from '@kryter/barnstorm/lib/fly';
 import {ButtonInstrument, TextBoxInstrument, UrlInstrument, URL_INSTRUMENT_ID} from '@kryter/barnstorm/lib/instruments';
 import { buildInstrumentSet } from '../../src/AppInstrumentSet';
-import {todoListPage, TODO_ITEM_TEXT_BOX_ID, ACTIVE_FILTER_BUTTON_ID, TODO_LIST_ITEM_TEXT_ID, TODO_LIST_ITEM_CHECKBOX_ID, CLEAR_COMPLETED_BUTTON_ID} from '../../src/todo/TodoPage';
-import {addTodoItemFlightPlan, checkOffTaskFlightPlan, filterTasksFlightPlan, filterCompletedTasksFlightPlan, filterUncompletedTasksFlightPlan, deleteCompletedTasksFlightPlan} from '../../src/todo/TodoPilot';
+import {todoListPage, TODO_ITEM_TEXT_BOX_ID, TODO_LIST_ITEM_TEXT_ID, TODO_LIST_ITEM_CHECKBOX_ID, CLEAR_COMPLETED_BUTTON_ID} from '../../src/todo/TodoPage';
+import {addTodoItemFlightPlan, checkOffTaskFlightPlan, filterCompletedTasksFlightPlan, filterUncompletedTasksFlightPlan, deleteCompletedTasksFlightPlan} from '../../src/todo/TodoPilot';
 import {ENTRY_URL} from '../../src/todo/AppUrls';
-import { instrumentSet } from '@kryter/barnstorm/lib/instrumentSet';
 
 describe('example to-do app (with Barnstorm)', () => {
   let instrumentSet: InstrumentSet;

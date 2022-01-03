@@ -1,5 +1,6 @@
 import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
 import { INSTRUMENT_TYPES } from '@kryter/barnstorm/lib/InstrumentOptions';
+import { ButtonInstrument } from '@kryter/barnstorm/lib/instruments';
 
 export const TODO_LIST_ID = 'TODO_LIST_ID';
 export const TODO_LIST_ITEM_TEXT_ID = 'TODO_LIST_ITEM_TEXT_ID';
@@ -8,6 +9,11 @@ export const TODO_ITEM_TEXT_BOX_ID = 'TODO_ITEM_TEXT_BOX_ID';
 export const CLEAR_COMPLETED_BUTTON_ID = 'CLEAR_COMPLETED_BUTTON_ID';
 export const COMPLETED_FILTER_BUTTON_ID = 'COMPLETED_FILTER_BUTTON_ID';
 export const ACTIVE_FILTER_BUTTON_ID = 'ACTIVE_FILTER_BUTTON_ID';
+
+// TODO convert into a set of functions returned
+export function getCompletedFilterButton(instrumentSet: InstrumentSet): ButtonInstrument {
+  return instrumentSet.use<ButtonInstrument>(COMPLETED_FILTER_BUTTON_ID);
+}
 
 export function todoListPage(instrumentSet: InstrumentSet): void {
   instrumentSet.setup({
