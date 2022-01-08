@@ -1,71 +1,110 @@
 import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
-import { INSTRUMENT_TYPES } from '@kryter/barnstorm/lib/InstrumentOptions';
-import { ButtonInstrument } from '@kryter/barnstorm/lib/instruments';
+import { ButtonInstrument, ListInstrument, TextBoxInstrument } from '@kryter/barnstorm/lib/instruments';
+import { INSTRUMENT_TYPES } from '@kryter/barnstorm/lib/INSTRUMENT_TYPES';
 
-export const TODO_LIST_ID = 'TODO_LIST_ID';
-export const TODO_LIST_ITEM_TEXT_ID = 'TODO_LIST_ITEM_TEXT_ID';
-export const TODO_LIST_ITEM_CHECKBOX_ID = 'TODO_LIST_ITEM_CHECKBOX_ID';
-export const TODO_ITEM_TEXT_BOX_ID = 'TODO_ITEM_TEXT_BOX_ID';
-export const CLEAR_COMPLETED_BUTTON_ID = 'CLEAR_COMPLETED_BUTTON_ID';
-export const COMPLETED_FILTER_BUTTON_ID = 'COMPLETED_FILTER_BUTTON_ID';
-export const ACTIVE_FILTER_BUTTON_ID = 'ACTIVE_FILTER_BUTTON_ID';
+const TODO_LIST = 'TODO_LIST';
+export const TODO_ITEM_TEXT = 'TODO_ITEM_TEXT';
+export const TODO_ITEM_CHECKBOX = 'TODO_ITEM_CHECKBOX';
 
-// TODO convert into a set of functions returned
-export function getCompletedFilterButton(instrumentSet: InstrumentSet): ButtonInstrument {
-  return instrumentSet.use<ButtonInstrument>(COMPLETED_FILTER_BUTTON_ID);
-}
+const TODO_TEXT_BOX = 'TODO_TEXT_BOX';
+const CLEAR_COMPLETED_BUTTON = 'CLEAR_COMPLETED_BUTTON';
+const COMPLETED_BUTTON = 'COMPLETED_BUTTON';
+const ACTIVE_BUTTON = 'ACTIVE_BUTTON';
 
-export function todoListPage(instrumentSet: InstrumentSet): void {
+export function setupTodoPage(instrumentSet: InstrumentSet) {
   instrumentSet.setup({
-    id: TODO_LIST_ID,
+    id: TODO_LIST,
     instrumentType: INSTRUMENT_TYPES.LIST,
     selector: '.todo-list',
     relativeItemSelector: 'li',
     columns: [
       {
-        id: TODO_LIST_ITEM_TEXT_ID,
-        instrumentType: INSTRUMENT_TYPES.SIMPLE_ELEMENT,
+        id: TODO_ITEM_TEXT,
+        instrumentType: INSTRUMENT_TYPES.UI_ELEMENT,
         selector: '',
       },
       {
-        id: TODO_LIST_ITEM_CHECKBOX_ID,
+        id: TODO_ITEM_CHECKBOX,
         instrumentType: INSTRUMENT_TYPES.CHECKBOX,
         selector: 'input[type="checkbox"].toggle'
       }
     ],
-    initialState: [
-      {
-        [TODO_LIST_ITEM_TEXT_ID]: 'Pay electric bill',
-        [TODO_LIST_ITEM_CHECKBOX_ID]: false
-      },
-      {
-        [TODO_LIST_ITEM_TEXT_ID]: 'Walk the dog',
-        [TODO_LIST_ITEM_CHECKBOX_ID]: false
-      }
-    ]
+    initialState: {
+      rows: [
+        {
+          [TODO_ITEM_TEXT]: {
+            textContent: 'Pay electric bill'
+          },
+          [TODO_ITEM_CHECKBOX]: {
+            isChecked: false
+          }
+        },
+        {
+          [TODO_ITEM_TEXT]: {
+            textContent: 'Walk the dog',
+          },
+          [TODO_ITEM_CHECKBOX]: {
+            isChecked: false
+          }
+        }
+      ]
+    }
   });
 
   instrumentSet.setup({
-    id: TODO_ITEM_TEXT_BOX_ID,
+    id: TODO_TEXT_BOX,
     instrumentType: INSTRUMENT_TYPES.TEXT_BOX,
-    selector: '[data-test=new-todo]'
+    selector: '[data-test=new-todo]',
+    initialState: {
+      inputText: ''
+    }
   });
 
   instrumentSet.setup({
-    id: COMPLETED_FILTER_BUTTON_ID,
+    id: CLEAR_COMPLETED_BUTTON,
     instrumentType: INSTRUMENT_TYPES.BUTTON,
-    selector: '[href="#/completed"]'
+    selector: '.todo-button.clear-completed',
+    initialState: {
+      textContent: ''
+    }
   });
 
   instrumentSet.setup({
-    id: ACTIVE_FILTER_BUTTON_ID,
+    id: COMPLETED_BUTTON,
     instrumentType: INSTRUMENT_TYPES.BUTTON,
-    selector: '[href="#/active"]'
+    selector: '[href="#/completed"]',
+    initialState: {
+      textContent: 'Completed'
+    }
   });
 
   instrumentSet.setup({
-    id: CLEAR_COMPLETED_BUTTON_ID,
+    id: ACTIVE_BUTTON,
     instrumentType: INSTRUMENT_TYPES.BUTTON,
-    selector: '.todo-button.clear-completed'
+    selector: '[href="#/active"]',
+    initialState: {
+      textContent: 'Active'
+    }
   });
+
+  return {
+    todoList: () => instrumentSet.use<ListInstrument>(TODO_LIST),
+    todoTextBox: () => instrumentSet.use<TextBoxInstrument>(TODO_TEXT_BOX),
+    clearCompletedButton: () => instrumentSet.use<ButtonInstrument>(CLEAR_COMPLETED_BUTTON),
+    completedButton: () => instrumentSet.use<ButtonInstrument>(COMPLETED_BUTTON),
+    activeButton: () => instrumentSet.use<ButtonInstrument>(ACTIVE_BUTTON),
+    teardownTodoPage: () => {
+      instrumentSet.teardown([
+        TODO_LIST,
+        TODO_ITEM_TEXT,
+        TODO_ITEM_CHECKBOX ,
+        TODO_TEXT_BOX,
+        CLEAR_COMPLETED_BUTTON,
+        COMPLETED_BUTTON,
+        ACTIVE_BUTTON
+      ]);
+    }
+  };
 }
+
+export type TodoPage = ReturnType<typeof setupTodoPage>;

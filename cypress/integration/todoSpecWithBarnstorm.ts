@@ -2,45 +2,44 @@
 
 import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
 import { fly } from '@kryter/barnstorm/lib/fly';
-import {ButtonInstrument, TextBoxInstrument, UrlInstrument, URL_INSTRUMENT_ID} from '@kryter/barnstorm/lib/instruments';
 import { buildInstrumentSet } from '../../src/AppInstrumentSet';
-import {todoListPage, TODO_ITEM_TEXT_BOX_ID, TODO_LIST_ITEM_TEXT_ID, TODO_LIST_ITEM_CHECKBOX_ID, CLEAR_COMPLETED_BUTTON_ID} from '../../src/todo/TodoPage';
-import {addTodoItemFlightPlan, checkOffTaskFlightPlan, filterCompletedTasksFlightPlan, filterUncompletedTasksFlightPlan, deleteCompletedTasksFlightPlan} from '../../src/todo/TodoPilot';
-import {ENTRY_URL} from '../../src/todo/AppUrls';
+import {addTodoItem, checkOffTask, filterCompletedTasks, filterUncompletedTasks, deleteCompletedTasks} from '../../src/todo/todoFlightPlans';
+import { ENTRY_URL } from '../../src/AppUrls';
+import {TODO_ITEM_CHECKBOX, TODO_ITEM_TEXT, setupTodoPage} from '../../src/todo/todoPage';
 
 describe('example to-do app (with Barnstorm)', () => {
   let instrumentSet: InstrumentSet;
+  let todoPage;
 
   beforeEach(() => {
     instrumentSet = buildInstrumentSet();
-    todoListPage(instrumentSet);
+    todoPage = setupTodoPage(instrumentSet);
 
-    instrumentSet.use<UrlInstrument>(URL_INSTRUMENT_ID).visit(ENTRY_URL);
+    instrumentSet.url().visit(ENTRY_URL);
   });
 
   it('Verify the todo text box is initially in focus', () => {
-    instrumentSet.use<TextBoxInstrument>(TODO_ITEM_TEXT_BOX_ID).verifyIsInFocus();
+    todoPage.todoTextBox().verifyIsInFocus();
   });
 
   it('Add a new todo item', () => {
-    fly(instrumentSet, addTodoItemFlightPlan({
+    fly(instrumentSet, addTodoItem({
+      todoPage,
       newItemText: 'Feed the cat'
     }));
   });
 
   it('Check off an item as completed', () => {
-    fly(instrumentSet, checkOffTaskFlightPlan({
+    fly(instrumentSet, checkOffTask({
+      todoPage,
       todoItemIndex: 0
     }));
   });
 
-  context('with a checked task', () => {
+  context('Start each test with a checked task', () => {
     beforeEach(() => {
-      // We'll take the command we used above to check off an element
-      // Since we want to perform multiple tests that start with checking
-      // one element, we put it in the beforeEach hook
-      // so that it runs at the start of every test.
-      fly(instrumentSet, checkOffTaskFlightPlan({
+      fly(instrumentSet, checkOffTask({
+        todoPage,
         todoItemIndex: 0,
       }));
     });
@@ -52,11 +51,16 @@ describe('example to-do app (with Barnstorm)', () => {
       // incomplete item in the list.
       // By verifying the full content, we can also assert that the task we checked off
       // does not exist on the page.
-      fly(instrumentSet, filterUncompletedTasksFlightPlan({
+      fly(instrumentSet, filterUncompletedTasks({
+        todoPage,
         expectedContent: [
           {
-            [TODO_LIST_ITEM_TEXT_ID]: 'Walk the dog',
-            [TODO_LIST_ITEM_CHECKBOX_ID]: false
+            [TODO_ITEM_TEXT]: {
+              textContent: 'Walk the dog'
+            },
+            [TODO_ITEM_CHECKBOX]: {
+              isChecked: false
+            }
           }
         ]
       }));
@@ -65,28 +69,40 @@ describe('example to-do app (with Barnstorm)', () => {
     it('Filter for completed tasks', () => {
       // We can perform similar steps as the test above to ensure
       // that only completed tasks are shown
-      fly(instrumentSet, filterCompletedTasksFlightPlan({
+      fly(instrumentSet, filterCompletedTasks({
+        todoPage,
         expectedContent: [
           {
-            [TODO_LIST_ITEM_TEXT_ID]: 'Pay electric bill',
-            [TODO_LIST_ITEM_CHECKBOX_ID]: true
+            [TODO_ITEM_TEXT]: {
+              textContent: 'Pay electric bill'
+            },
+            [TODO_ITEM_CHECKBOX]: {
+              isChecked: true
+            }
           }
         ]
       }));
     });
 
     it('Delete all completed tasks', () => {
-      fly(instrumentSet, deleteCompletedTasksFlightPlan({
+      fly(instrumentSet, deleteCompletedTasks({
+        todoPage,
         expectedContent: [
           {
-            [TODO_LIST_ITEM_TEXT_ID]: 'Walk the dog',
-            [TODO_LIST_ITEM_CHECKBOX_ID]: false
+            [TODO_ITEM_TEXT]: {
+              textContent: 'Walk the dog'
+            },
+            [TODO_ITEM_CHECKBOX]: {
+              isChecked: false
+            }
           }
         ]
       }));
 
       // Finally, make sure that the clear button no longer exists.
-      instrumentSet.use<ButtonInstrument>(CLEAR_COMPLETED_BUTTON_ID).verifyIsNotVisible();
+      todoPage.clearCompletedButton().updateState({
+        isVisible: false
+      });
     })
   });
 });
