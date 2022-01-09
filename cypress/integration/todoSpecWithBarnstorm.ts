@@ -98,11 +98,6 @@ describe('example to-do app (with Barnstorm)', () => {
           }
         ]
       }));
-
-      // Finally, make sure that the clear button no longer exists.
-      todoPage.clearCompletedButton().updateState({
-        isVisible: false
-      });
     })
   });
 });

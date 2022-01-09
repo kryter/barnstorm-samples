@@ -49,8 +49,7 @@ export function checkOffTask({todoPage, todoItemIndex}: CheckOffItemOptions): Fl
           todoPage.clearCompletedButton().updateState({
             textContent: 'Clear completed'
           });
-          const listInstrument = todoPage.todoList();
-          const cellId = listInstrument.getCellId(todoItemIndex, TODO_ITEM_TEXT);
+          const cellId = todoPage.todoList().getCellId(todoItemIndex, TODO_ITEM_TEXT);
           instrumentSet.use<UIElementInstrument>(cellId).updateState({
             hasClasses: ['completed']
           });
@@ -123,8 +122,10 @@ export function deleteCompletedTasks({todoPage, expectedContent}: DeleteComplete
           todoPage.clearCompletedButton().click();
         },
         updateExpectations: (instrumentSet: InstrumentSet) => {
+          // Make sure that the clear button no longer exists.
           todoPage.clearCompletedButton().updateState({
-            textContent: ''
+            textContent: '',
+            isVisible: false
           });
           todoPage.todoList().updateState({
             rows: expectedContent
