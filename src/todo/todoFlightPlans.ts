@@ -21,6 +21,9 @@ export function addTodoItem({todoPage, newItemText}: AddTodoItemOptions): Flight
           todoPage.todoList().addRow({
             [TODO_ITEM_TEXT]: {
               textContent: newItemText
+            },
+            [TODO_ITEM_CHECKBOX]: {
+              isChecked: false
             }
           });
         }
@@ -117,7 +120,6 @@ export function deleteCompletedTasks({todoPage, expectedContent}: DeleteComplete
     legs: [
       {
         doTestAction: (instrumentSet: InstrumentSet) => {
-          todoPage.clearCompletedButton().verifyTextContent('Clear completed');
           todoPage.clearCompletedButton().click();
         },
         updateExpectations: (instrumentSet: InstrumentSet) => {
