@@ -23,6 +23,7 @@ export function addTodoItem({todoPage, newItemText}: AddTodoItemOptions): Flight
               textContent: newItemText
             },
             [TODO_ITEM_CHECKBOX]: {
+              isVisible: false,
               isChecked: false
             }
           });
@@ -47,7 +48,8 @@ export function checkOffTask({todoPage, todoItemIndex}: CheckOffItemOptions): Fl
         },
         updateExpectations: (instrumentSet: InstrumentSet) => {
           todoPage.clearCompletedButton().updateState({
-            textContent: 'Clear completed'
+            textContent: 'Clear completed',
+            isVisible: true
           });
           const cellId = todoPage.todoList().getCellId(todoItemIndex, TODO_ITEM_TEXT);
           instrumentSet.use<UIElementInstrument>(cellId).updateState({

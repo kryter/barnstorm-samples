@@ -59,7 +59,8 @@ describe('example to-do app (with Barnstorm)', () => {
               textContent: 'Walk the dog'
             },
             [TODO_ITEM_CHECKBOX]: {
-              isChecked: false
+              isChecked: false,
+              isVisible: false
             }
           }
         ]
@@ -77,7 +78,8 @@ describe('example to-do app (with Barnstorm)', () => {
               textContent: 'Pay electric bill'
             },
             [TODO_ITEM_CHECKBOX]: {
-              isChecked: true
+              isChecked: true,
+              isVisible: false
             }
           }
         ]
@@ -93,7 +95,8 @@ describe('example to-do app (with Barnstorm)', () => {
               textContent: 'Walk the dog'
             },
             [TODO_ITEM_CHECKBOX]: {
-              isChecked: false
+              isChecked: false,
+              isVisible: false
             }
           }
         ]

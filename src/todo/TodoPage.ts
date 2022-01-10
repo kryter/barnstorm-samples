@@ -27,7 +27,8 @@ const todoListConfig = {
     {
       id: TODO_ITEM_CHECKBOX,
       instrumentType: INSTRUMENT_TYPES.CHECKBOX,
-      selector: 'input[type="checkbox"].toggle'
+      selector: 'input[type="checkbox"].toggle',
+      verifyStateWhenInvisible: true
     }
   ],
   initialState: {
@@ -37,7 +38,8 @@ const todoListConfig = {
           textContent: 'Pay electric bill'
         },
         [TODO_ITEM_CHECKBOX]: {
-          isChecked: false
+          isChecked: false,
+          isVisible: false
         }
       },
       {
@@ -45,7 +47,8 @@ const todoListConfig = {
           textContent: 'Walk the dog',
         },
         [TODO_ITEM_CHECKBOX]: {
-          isChecked: false
+          isChecked: false,
+          isVisible: false
         }
       }
     ]
@@ -66,7 +69,8 @@ const clearCompletedButtonConfig = {
   instrumentType: INSTRUMENT_TYPES.BUTTON,
   selector: '.todo-button.clear-completed',
   initialState: {
-    textContent: ''
+    textContent: '',
+    isVisible: false
   }
 };
 
