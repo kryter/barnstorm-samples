@@ -4,17 +4,11 @@ import { INSTRUMENT_TYPES } from '@kryter/barnstorm/lib/INSTRUMENT_TYPES';
 
 // Export the column keys for a list for reference in expected data
 // updates during tests.
-const TODO_LIST = 'TODO_LIST';
 export const TODO_ITEM_TEXT = 'TODO_ITEM_TEXT';
 export const TODO_ITEM_CHECKBOX = 'TODO_ITEM_CHECKBOX';
 
-const TODO_TEXT_BOX = 'TODO_TEXT_BOX';
-const TODO_CLEAR_COMPLETED_BUTTON = 'TODO_CLEAR_COMPLETED_BUTTON';
-const TODO_FILTER_COMPLETED_BUTTON = 'TODO_FILTER_COMPLETED_BUTTON';
-const TODO_FILTER_ACTIVE_BUTTON = 'TODO_FILTER_ACTIVE_BUTTON';
-
-const todoListConfig = {
-  id: TODO_LIST,
+const todoList = {
+  id: 'todoList',
   instrumentType: INSTRUMENT_TYPES.LIST,
   selector: '.todo-list',
   relativeItemSelector: 'li',
@@ -55,8 +49,8 @@ const todoListConfig = {
   }
 };
 
-const todoTextBoxConfig = {
-  id: TODO_TEXT_BOX,
+const todoTextBox = {
+  id: 'todoTextBox',
   instrumentType: INSTRUMENT_TYPES.TEXT_BOX,
   selector: '[data-test=new-todo]',
   initialState: {
@@ -64,8 +58,8 @@ const todoTextBoxConfig = {
   }
 };
 
-const clearCompletedButtonConfig = {
-  id: TODO_CLEAR_COMPLETED_BUTTON,
+const clearCompletedButton = {
+  id: 'clearCompletedButton',
   instrumentType: INSTRUMENT_TYPES.BUTTON,
   selector: '.todo-button.clear-completed',
   initialState: {
@@ -74,8 +68,8 @@ const clearCompletedButtonConfig = {
   }
 };
 
-const completedButtonConfig = {
-  id: TODO_FILTER_COMPLETED_BUTTON,
+const filterCompletedButton = {
+  id: 'completedButton',
   instrumentType: INSTRUMENT_TYPES.BUTTON,
   selector: '[href="#/completed"]',
   initialState: {
@@ -83,8 +77,8 @@ const completedButtonConfig = {
   }
 };
 
-const activeButtonConfig = {
-  id: TODO_FILTER_ACTIVE_BUTTON,
+const filterActiveButton = {
+  id: 'activeButton',
   instrumentType: INSTRUMENT_TYPES.BUTTON,
   selector: '[href="#/active"]',
   initialState: {
@@ -93,24 +87,24 @@ const activeButtonConfig = {
 };
 
 const configs = [
-  todoListConfig,
-  todoTextBoxConfig,
-  clearCompletedButtonConfig,
-  completedButtonConfig,
-  activeButtonConfig
+  todoList,
+  todoTextBox,
+  clearCompletedButton,
+  filterCompletedButton,
+  filterActiveButton
 ];
 
-export function setupTodoPage(instrumentSet: InstrumentSet) {
-  configs.forEach(config => instrumentSet.setup(config));
+export function setupTodoTower(instruments: InstrumentSet) {
+  instruments.createInstruments(configs);
 
   return {
-    todoList: () => instrumentSet.use<ListInstrument>(TODO_LIST),
-    todoTextBox: () => instrumentSet.use<TextBoxInstrument>(TODO_TEXT_BOX),
-    clearCompletedButton: () => instrumentSet.use<ButtonInstrument>(TODO_CLEAR_COMPLETED_BUTTON),
-    completedButton: () => instrumentSet.use<ButtonInstrument>(TODO_FILTER_COMPLETED_BUTTON),
-    activeButton: () => instrumentSet.use<ButtonInstrument>(TODO_FILTER_ACTIVE_BUTTON),
-    teardownTodoPage: () => instrumentSet.teardown(configs.map(config => config.id))
+    todoList: () => instruments.use<ListInstrument>(todoList.id),
+    todoTextBox: () => instruments.use<TextBoxInstrument>(todoTextBox.id),
+    clearCompletedButton: () => instruments.use<ButtonInstrument>(clearCompletedButton.id),
+    filterCompletedButton: () => instruments.use<ButtonInstrument>(filterCompletedButton.id),
+    filterActiveButton: () => instruments.use<ButtonInstrument>(filterActiveButton.id),
+    instrumentIds: () => configs.map((config) => config.id)
   };
 }
 
-export type TodoPage = ReturnType<typeof setupTodoPage>;
+export type TodoTower = ReturnType<typeof setupTodoTower>;

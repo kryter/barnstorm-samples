@@ -1,45 +1,47 @@
 /// <reference types="cypress" />
 
 import { InstrumentSet } from '@kryter/barnstorm/lib/InstrumentSet';
-import { fly } from '@kryter/barnstorm/lib/fly';
-import { buildInstrumentSet } from '../../src/AppInstrumentSet';
-import {addTodoItem, checkOffTask, filterCompletedTasks, filterUncompletedTasks, deleteCompletedTasks} from '../../src/todo/todoFlightPlans';
-import { ENTRY_URL } from '../../src/AppUrls';
-import {TODO_ITEM_CHECKBOX, TODO_ITEM_TEXT, setupTodoPage} from '../../src/todo/todoPage';
+import { useAirplane, FlyFunction } from '@kryter/barnstorm/lib/useAirplane';
+import { useInstruments} from '../barnstorm/useInstruments';
+import {addTodoItem, checkOffTask, filterCompletedTasks, filterUncompletedTasks, deleteCompletedTasks} from '../barnstorm/todo/todoFlightPlans';
+import { useUrls } from '../barnstorm/useUrls';
+import { TodoTower, setupTodoTower, TODO_ITEM_TEXT, TODO_ITEM_CHECKBOX } from '../barnstorm/todo/todoTower';
 
 describe('example to-do app (with Barnstorm)', () => {
-  let instrumentSet: InstrumentSet;
-  let todoPage;
+  let instruments: InstrumentSet;
+  let fly: FlyFunction;
+  let todoTower: TodoTower;
 
   beforeEach(() => {
-    instrumentSet = buildInstrumentSet();
-    todoPage = setupTodoPage(instrumentSet);
+    instruments = useInstruments();
+    fly = useAirplane(instruments);
+    todoTower = setupTodoTower(instruments);
 
-    instrumentSet.url().visit(ENTRY_URL);
+    instruments.url().visit(useUrls().baseUrl);
   });
 
   it('Verify the todo text box is initially in focus', () => {
-    todoPage.todoTextBox().verifyIsInFocus();
+    todoTower.todoTextBox().verifyIsInFocus();
   });
 
   it('Add a new todo item', () => {
-    fly(instrumentSet, addTodoItem({
-      todoPage,
+    fly(addTodoItem({
+      todoTower,
       newItemText: 'Feed the cat'
     }));
   });
 
   it('Check off an item as completed', () => {
-    fly(instrumentSet, checkOffTask({
-      todoPage,
+    fly(checkOffTask({
+      todoTower,
       todoItemIndex: 0
     }));
   });
 
   context('Start each test with a checked task', () => {
     beforeEach(() => {
-      fly(instrumentSet, checkOffTask({
-        todoPage,
+      fly(checkOffTask({
+        todoTower,
         todoItemIndex: 0,
       }));
     });
@@ -51,8 +53,8 @@ describe('example to-do app (with Barnstorm)', () => {
       // incomplete item in the list.
       // By verifying the full content, we can also assert that the task we checked off
       // does not exist on the page.
-      fly(instrumentSet, filterUncompletedTasks({
-        todoPage,
+      fly(filterUncompletedTasks({
+        todoTower,
         expectedContent: [
           {
             [TODO_ITEM_TEXT]: {
@@ -70,8 +72,8 @@ describe('example to-do app (with Barnstorm)', () => {
     it('Filter for completed tasks', () => {
       // We can perform similar steps as the test above to ensure
       // that only completed tasks are shown
-      fly(instrumentSet, filterCompletedTasks({
-        todoPage,
+      fly(filterCompletedTasks({
+        todoTower,
         expectedContent: [
           {
             [TODO_ITEM_TEXT]: {
@@ -87,8 +89,8 @@ describe('example to-do app (with Barnstorm)', () => {
     });
 
     it('Delete all completed tasks', () => {
-      fly(instrumentSet, deleteCompletedTasks({
-        todoPage,
+      fly(deleteCompletedTasks({
+        todoTower,
         expectedContent: [
           {
             [TODO_ITEM_TEXT]: {
