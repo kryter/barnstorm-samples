@@ -6,5 +6,5 @@
     "noEmit": true,
     "moduleResolution": "node"
   },
-  "include": ["integration/*.ts"]
+  "include": ["**/*.ts"]
 }
