@@ -2,6 +2,24 @@
 
 Samples of end to end testing using Barnstorm
 
+## Getting Started
+
+Install dependencies:
+
+`npm install`
+
+## Running the End to End Tests
+
+Run the Barnstorm sample test, `cypress/integration/todoSpecWithBarnstorm.ts`, by command line:
+
+`npm run e2e`
+
+Or, start Cypress UI:
+
+`npm run cypress:open`
+
+Pick any test and run it.
+
 ## Explore Barnstorm Test Structure
 
 To create a simple Barnstorm example, I've started with a sample test provided by the awesome folks at Cypress.io in `cypress/integration/todoSpec.ts`.  This is the default sample test that you will see when running `cypress:open` in a project where `Cypress` has been recently installed.
