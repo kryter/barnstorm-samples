@@ -54,7 +54,7 @@ const todoTextBox = {
   instrumentType: INSTRUMENT_TYPES.TEXT_BOX,
   selector: '[data-test=new-todo]',
   initialState: {
-    inputText: ''
+    textContent: ''
   }
 };
 
