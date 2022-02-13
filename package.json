@@ -1,6 +1,6 @@
 {
   "name": "@kryter/barnstorm-samples",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Samples of end to end tests using Barnstorm",
   "scripts": {
     "build": "tsc -p ./cypress/tsconfig.json",
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/kryter/barnstorm-samples#readme",
   "devDependencies": {
-    "@kryter/barnstorm": "^1.0.4",
-    "@kryter/barnstorm-cypress": "^1.0.0",
+    "@kryter/barnstorm": "2.0.0",
+    "@kryter/barnstorm-cypress": "2.0.0",
     "cypress": "^8.6.0",
     "typescript": "^4.4.4"
   }

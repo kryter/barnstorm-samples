@@ -10,18 +10,24 @@ export const TODO_ITEM_CHECKBOX = 'TODO_ITEM_CHECKBOX';
 const todoList = {
   id: 'todoList',
   instrumentType: INSTRUMENT_TYPES.LIST,
-  selector: '.todo-list',
+  selector: {
+    css: '.todo-list'
+  },
   relativeItemSelector: 'li',
   columns: [
     {
       id: TODO_ITEM_TEXT,
       instrumentType: INSTRUMENT_TYPES.UI_ELEMENT,
-      selector: '',
+      selector: {
+        css: ''
+      },
     },
     {
       id: TODO_ITEM_CHECKBOX,
       instrumentType: INSTRUMENT_TYPES.CHECKBOX,
-      selector: 'input[type="checkbox"].toggle',
+      selector: {
+        css: 'input[type="checkbox"].toggle'
+      },
       verifyStateWhenInvisible: true
     }
   ],
@@ -52,7 +58,9 @@ const todoList = {
 const todoTextBox = {
   id: 'todoTextBox',
   instrumentType: INSTRUMENT_TYPES.TEXT_BOX,
-  selector: '[data-test=new-todo]',
+  selector: {
+    css: '[data-test=new-todo]'
+  },
   initialState: {
     textContent: ''
   }
@@ -61,7 +69,9 @@ const todoTextBox = {
 const clearCompletedButton = {
   id: 'clearCompletedButton',
   instrumentType: INSTRUMENT_TYPES.BUTTON,
-  selector: '.todo-button.clear-completed',
+  selector: {
+    css: '.todo-button.clear-completed'
+  },
   initialState: {
     textContent: '',
     isVisible: false
@@ -71,7 +81,9 @@ const clearCompletedButton = {
 const filterCompletedButton = {
   id: 'completedButton',
   instrumentType: INSTRUMENT_TYPES.BUTTON,
-  selector: '[href="#/completed"]',
+  selector: {
+    css: '[href="#/completed"]'
+  },
   initialState: {
     textContent: 'Completed'
   }
@@ -80,7 +92,9 @@ const filterCompletedButton = {
 const filterActiveButton = {
   id: 'activeButton',
   instrumentType: INSTRUMENT_TYPES.BUTTON,
-  selector: '[href="#/active"]',
+  selector: {
+    css: '[href="#/active"]'
+  },
   initialState: {
     textContent: 'Active'
   }
