@@ -31,8 +31,8 @@
   "homepage": "https://github.com/kryter/barnstorm-samples#readme",
   "devDependencies": {
     "@kryter/barnstorm": "2.0.0",
-    "@kryter/barnstorm-cypress": "2.0.0",
-    "cypress": "^8.6.0",
-    "typescript": "^4.4.4"
+    "@kryter/barnstorm-cypress": "3.0.0",
+    "cypress": "9.6.1",
+    "typescript": "4.6.4"
   }
 }
